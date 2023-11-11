@@ -1,26 +1,14 @@
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-//import net.javaguides.usermanagement.dao.UserDAO;
-//import net.javaguides.usermanagement.model.User;
-
 import jsp.project.dao.UserDAO;
 import jsp.project.model.User;
-
-/**
- * ControllerServlet.java
- * This servlet acts as a page controller for the application, handling all
- * requests from the user.
- * @email Ramesh Fadatare
- */
 
 @WebServlet("/")
 public class UserServlet extends HttpServlet {
@@ -30,12 +18,10 @@ public class UserServlet extends HttpServlet {
     public void init() {
         userDAO = new UserDAO();
     }
-
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         doGet(request, response);
     }
-
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         String action = request.getServletPath();
@@ -117,6 +103,5 @@ public class UserServlet extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("id"));
         userDAO.deleteUser(id);
         response.sendRedirect("list");
-
     }
 }
