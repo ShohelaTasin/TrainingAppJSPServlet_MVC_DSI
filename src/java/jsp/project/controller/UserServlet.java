@@ -1,6 +1,10 @@
+package jsp.project.controller;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,14 +13,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import jsp.project.dao.UserDAO;
 import jsp.project.model.User;
+import jsp.project.model.LoginBean;
+import jsp.project.dao.LoginDao;
+
 
 @WebServlet("/")
 public class UserServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private UserDAO userDAO;
+    private LoginDao loginDao;
 
     public void init() {
+        userDAO = null;
         userDAO = new UserDAO();
+        loginDao = null;
+        loginDao = new LoginDao() ;
     }
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
@@ -43,8 +54,17 @@ public class UserServlet extends HttpServlet {
                 case "/update":
                     updateUser(request, response);
                     break;
-                default:
+                case "/list":
                     listUser(request, response);
+                    break;    
+                case "/login":
+                    userLogIn(request, response);
+                    break;
+                case "/signup":
+                    userSignUp(request, response);
+                    break;
+                default:
+                    response.sendRedirect("login.jsp");
                     break;
             }
         } catch (SQLException ex) {
@@ -104,4 +124,37 @@ public class UserServlet extends HttpServlet {
         userDAO.deleteUser(id);
         response.sendRedirect("list");
     }
-}
+
+    
+    protected void userLogIn(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException, SQLException {
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        LoginBean loginBean = new LoginBean();
+        loginBean.setUsername(username);
+        loginBean.setPassword(password);
+
+        if (loginDao.validate(loginBean)){
+            RequestDispatcher dispatcher = request.getRequestDispatcher("list");
+            dispatcher.forward(request, response);
+        } else {
+            //session.setAttribute("user", username);
+            response.sendRedirect("signup.jsp");
+        }
+    }
+    protected void userSignUp(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException, SQLException {
+            
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        LoginBean loginBean = new LoginBean();
+        loginBean.setUsername(username);
+        loginBean.setPassword(password);
+        loginDao.insertUser(loginBean);
+        response.sendRedirect("login.jsp");
+    
+           
+    }
+    
+}   
+
