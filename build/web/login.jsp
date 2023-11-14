@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>login page</title>
 </head>
 <body>
  <div align="center">
@@ -21,7 +21,7 @@
     </tr>
 
    </table>
-   <input type="submit" value="Submit" />
+   <input type="submit" value="Login" />
   </form>
    
    <a href="signup.jsp">SignUp</a>

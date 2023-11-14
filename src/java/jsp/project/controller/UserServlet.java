@@ -139,7 +139,7 @@ public class UserServlet extends HttpServlet {
             dispatcher.forward(request, response);
         } else {
             //session.setAttribute("user", username);
-            response.sendRedirect("signup.jsp");
+            response.sendRedirect("login.jsp");
         }
     }
     protected void userSignUp(HttpServletRequest request, HttpServletResponse response)
